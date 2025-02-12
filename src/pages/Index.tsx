@@ -2,8 +2,11 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, Clock, MapPin, Phone, Scissors } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
+  
   const services = [
     {
       title: "Corte y Estilo",
@@ -25,13 +28,25 @@ const Index = () => {
     },
   ];
 
+  const handleReserva = (servicio?: string) => {
+    navigate('/reserva', { 
+      state: { 
+        servicio: servicio ? `${servicio.title} - ${servicio.price}` : "" 
+      } 
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="fixed top-0 w-full bg-white/80 backdrop-blur-sm z-50 border-b">
         <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl">Belle Coiffure</h1>
-          <Button size="lg" className="bg-black hover:bg-black/90">
+          <Button 
+            size="lg" 
+            className="bg-black hover:bg-black/90"
+            onClick={() => handleReserva()}
+          >
             <Calendar className="mr-2 h-4 w-4" />
             Reservar Cita
           </Button>
@@ -58,7 +73,10 @@ const Index = () => {
                   <div className="text-xl font-semibold">{service.price}</div>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full">
+                  <Button 
+                    className="w-full"
+                    onClick={() => handleReserva(service)}
+                  >
                     <Scissors className="mr-2 h-4 w-4" />
                     Agendar
                   </Button>
