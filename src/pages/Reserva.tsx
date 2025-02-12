@@ -16,6 +16,7 @@ interface ReservaFormData {
   email: string;
   telefono: string;
   fecha: Date;
+  hora: string;
   servicio: string;
   notas: string;
 }
@@ -38,12 +39,16 @@ const Reserva = () => {
     "Tratamiento Capilar - 35€",
   ];
 
+  const horasDisponibles = [
+    "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
+    "12:00", "12:30", "13:00", "13:30", "14:00", "14:30",
+    "16:00", "16:30", "17:00", "17:30", "18:00", "18:30",
+    "19:00", "19:30"
+  ];
+
   const onSubmit = (data: ReservaFormData) => {
     console.log(data);
-    // Aquí iría la lógica para procesar la reserva
-    // Por ahora solo mostraremos un mensaje de éxito
-    alert("Reserva realizada con éxito");
-    navigate("/");
+    navigate('/confirmacion', { state: { reserva: data } });
   };
 
   return (
@@ -130,32 +135,58 @@ const Reserva = () => {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="fecha"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Fecha</FormLabel>
-                      <FormControl>
-                        <div className="border rounded-md p-4">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={(date) => field.onChange(date)}
-                            locale={es}
-                            disabled={(date) => {
-                              const day = date.getDay();
-                              return (
-                                day === 0 || // Domingo
-                                date < new Date() // Fechas pasadas
-                              );
-                            }}
-                          />
-                        </div>
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <FormField
+                    control={form.control}
+                    name="fecha"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Fecha</FormLabel>
+                        <FormControl>
+                          <div className="border rounded-md p-4">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => field.onChange(date)}
+                              locale={es}
+                              disabled={(date) => {
+                                const day = date.getDay();
+                                return (
+                                  day === 0 || // Domingo
+                                  date < new Date() // Fechas pasadas
+                                );
+                              }}
+                            />
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="hora"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Hora</FormLabel>
+                        <FormControl>
+                          <select
+                            {...field}
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            required
+                          >
+                            <option value="">Selecciona una hora</option>
+                            {horasDisponibles.map((hora) => (
+                              <option key={hora} value={hora}>
+                                {hora}
+                              </option>
+                            ))}
+                          </select>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <FormField
                   control={form.control}
