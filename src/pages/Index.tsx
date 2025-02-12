@@ -4,10 +4,17 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Calendar, Clock, MapPin, Phone, Scissors } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+interface Service {
+  title: string;
+  price: string;
+  duration: string;
+  description: string;
+}
+
 const Index = () => {
   const navigate = useNavigate();
   
-  const services = [
+  const services: Service[] = [
     {
       title: "Corte y Estilo",
       price: "45€",
@@ -28,7 +35,7 @@ const Index = () => {
     },
   ];
 
-  const handleReserva = (servicio?: string) => {
+  const handleReserva = (servicio?: Service) => {
     navigate('/reserva', { 
       state: { 
         servicio: servicio ? `${servicio.title} - ${servicio.price}` : "" 
