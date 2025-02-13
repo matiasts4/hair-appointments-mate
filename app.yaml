@@ -1,0 +1,8 @@
+# app.yaml (para entornos estándar)
+runtime: python39  # Ejemplo para Python (ajusta según tu lenguaje)
+entrypoint: python main.py  # Comando para iniciar tu app
+service: default  # Nombre del servicio (cámbialo si es necesario)
+
+# O si es entorno flexible (usando Docker):
+# runtime: custom
+# env: flex
